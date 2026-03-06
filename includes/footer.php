@@ -17,7 +17,7 @@ $setting = $GLOBALS['VOIDSetting'];
                     <p>感谢陪伴：<span id="uptime"></span></p>
                 </section>
                 <section>
-                    <p>Powered by <a href="http://typecho.org/">Typecho</a> • <a href="https://blog.imalan.cn/archives/247/">Theme VOID</a></p>
+                    <p>Powered by <a href="https://typecho.org/">Typecho</a> • <a href="https://github.com/FmCoral/VOID-Modified-By-FmCoral">Theme VOID</a></p>
                     <p><?php echo $setting['footer']; ?></p>
                 </section>
             </div>
@@ -130,18 +130,18 @@ $setting = $GLOBALS['VOIDSetting'];
         }
         </script>
         <?php endif; ?>
-        <script data-manual src="<?php Utils::indexTheme('/assets/bundle-b514182550.js'); ?>"></script>
+        <script data-manual src="<?php Utils::indexTheme('/assets/bundle-35ea1de458.js'); ?>"></script>
         <?php if($setting['enableMath']): ?>
         <script src='<?php Utils::indexTheme('/assets/libs/mathjax/2.7.4/MathJax.js'); ?>'></script>
         <?php endif; ?>
-        <script src="<?php Utils::indexTheme('/assets/VOID-2c818e2660.js'); ?>"></script>
+        <script src="<?php Utils::indexTheme('/assets/VOID-80b84c7780.js'); ?>"></script>
         <script>
         if($(".OwO").length > 0){
             new OwO({
                 logo: 'OωO',
                 container: document.getElementsByClassName('OwO')[0],
                 target: document.getElementsByClassName('input-area')[0],
-                api: '<?php Utils::indexTheme('/assets/libs/owo/OwO_02.json'); ?>',
+                api: '<?php Utils::indexTheme('/assets/libs/owo/OwO_03.json'); ?>',
                 position: 'down',
                 width: '400px',
                 maxHeight: '250px'
