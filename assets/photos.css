@@ -1,0 +1,31 @@
+/**
+ * photos.css
+ *
+ * 图集排版
+ *
+ * @author      FmCoral
+ * @version     2026-03-06 0.1
+ */
+
+.photos {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 5px !important;
+  --gap: 5px;
+  --cols: 4;
+}
+.photos.large {
+  gap: 8px !important;
+  --gap: 8px;
+}
+.photos figure {
+  min-width: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+}
+.photos a.lazyload-container,
+.photos a {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 0 !important;
+}
+
