@@ -122,6 +122,10 @@ function themeFields(Typecho_Widget_Helper_Layout $layout)
     $layout->addItem($showfullcontent);
     $showTOC = new Typecho_Widget_Helper_Form_Element_Select('showTOC', array('0' => '不显示目录', '1' => '显示目录'), '0', '文章目录', '是否显示文章目录。');
     $layout->addItem($showTOC);
+        $enableOutdatedNotice = new Typecho_Widget_Helper_Form_Element_Select('enableOutdatedNotice', array('0' => '关闭', '1' => '开启'), '1', '文章过期提醒', '是否开启文章过期提醒功能。');
+    $layout->addItem($enableOutdatedNotice);
+    $outdatedDays = new Typecho_Widget_Helper_Form_Element_Text('outdatedDays', null, '30', '过期提醒天数', '设置文章多少天后显示过期提醒，留空默认30天。');
+    $layout->addItem($outdatedDays);
 }
 
 $GLOBALS['VOIDSetting'] = Utils::getVOIDSettings();
