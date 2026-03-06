@@ -138,11 +138,11 @@ class Utils
     public static function addButton()
     {
         echo '<script src="';
-        self::indexTheme('/assets/libs/owo/owo_02.js');
+        self::indexTheme('/assets/libs/owo/owo_03.js');
         echo '"></script>';
 
         echo '<script src="';
-        self::indexTheme('/assets/editor-d6bdd77f4b.js');
+        self::indexTheme('/assets/editor-40479fd536.js');
         echo '"></script>';
 
         echo '<link rel="stylesheet" href="';
@@ -188,7 +188,19 @@ class Utils
         $created = round((time()- $archive->created) / 3600 / 24);
         $updated = round((time()- $archive->modified) / 3600 / 24);
 
-        return array("is" => $created > 90,
+        // 检查文章是否开启过期提醒
+        $enableOutdatedNotice = $archive->fields->enableOutdatedNotice;
+        if ($enableOutdatedNotice === '0') {
+            return array("is" => false,
+                        "created" => $created,
+                        "updated" => $updated);
+        }
+        
+        // 获取过期天数设置，默认30天
+        $outdatedDays = $archive->fields->outdatedDays;
+        $days = empty($outdatedDays) ? 30 : intval($outdatedDays);
+
+        return array("is" => $created > $days,
                     "created" => $created,
                     "updated" => $updated);
     }
@@ -336,6 +348,7 @@ class Utils
             'commentFoldThreshold' => array(5, 1.5),
             'commentNotification' => '',
             'bluredLazyload' => false,
+            'browserLevelLoadingLazy' => false,
             'CDNType' => array()
         );
 
