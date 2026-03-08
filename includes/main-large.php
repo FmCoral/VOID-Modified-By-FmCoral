@@ -23,6 +23,46 @@ $setting = $GLOBALS['VOIDSetting'];
         body > footer { display: none; }
         main {display: flex; flex-direction: column; justify-content: center; padding: 17.5vh 0 50px 0;}
     </style>
+    <?php if($this->fields->enableMusic == '1'): ?>
+    <div class="wrapper container <?php if($setting['indexStyle'] == 1) echo 'narrow'; else echo 'wide'; ?>">
+        <div id="player" style="margin: 40px 0;"></div>
+    </div>
+    <link rel="stylesheet" href="<?php $this->options->themeUrl('assets/APlayer.min.css'); ?>">
+    <script src="<?php $this->options->themeUrl('assets/APlayer.min.js'); ?>"></script>
+    <script>
+    (function(){
+        var url = "<?php $this->options->themeUrl('assets/music.json'); ?>";
+        function toArray(list){
+            if(Array.isArray(list)) return list;
+            var arr = [];
+            if(list && typeof list === 'object'){
+                for(var k in list){ if(Object.prototype.hasOwnProperty.call(list,k)) arr.push(list[k]); }
+            }
+            return arr;
+        }
+        try {
+            fetch(url).then(function(r){return r.json();}).then(function(list){
+                new APlayer({
+                    element: document.getElementById('player'),
+                    narrow: false,
+                    autoplay: false,
+                    mutex: true,
+                    showlrc: 3,
+                    theme: '#b7daff',
+                    mode: 'random',
+                    preload: 'auto',
+                    listmaxheight: '340px',
+                    music: toArray(list)
+                });
+            }).catch(function(){
+                new APlayer({ element: document.getElementById('player'), music: [] });
+            });
+        } catch(e){
+            new APlayer({ element: document.getElementById('player'), music: [] });
+        }
+    })();
+    </script>
+    <?php endif; ?>
     <div class="app-landscape theme-dark">
         <div class="mask" id="bg"><div class="mask"></div></div>
         <div class="container" style="margin-bottom: 2rem">

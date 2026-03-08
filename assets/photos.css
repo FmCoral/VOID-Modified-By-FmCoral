@@ -1,12 +1,4 @@
-/**
- * photos.css
- *
- * 图集排版
- *
- * @author      FmCoral
- * @version     2026-03-07 1.1
- */
-
+/* photos override */
 .photos {
   display: flex !important;
   flex-wrap: wrap !important;
