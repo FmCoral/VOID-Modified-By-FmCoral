@@ -129,6 +129,22 @@ function themeFields(Typecho_Widget_Helper_Layout $layout)
 
     $enableMusic = new Typecho_Widget_Helper_Form_Element_Select('enableMusic', array('0' => '关闭', '1' => '开启'), '0', '是否插入音乐', '是否为该文章启用音乐功能。');
     $layout->addItem($enableMusic);
+    
+    // 动态读取 music.json 中的曲目
+    $musicFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'music.json';
+    $musicOptions = array('all' => '随机播放全部');
+    if (file_exists($musicFile)) {
+        $musicData = json_decode(file_get_contents($musicFile), true);
+        if (is_array($musicData)) {
+            foreach ($musicData as $key => $value) {
+                $name = isset($value['name']) ? $value['name'] : $key;
+                $artist = isset($value['artist']) ? $value['artist'] : '';
+                $musicOptions[$key] = $name . ($artist ? ' - ' . $artist : '');
+            }
+        }
+    }
+    $musicSelect = new Typecho_Widget_Helper_Form_Element_Select('musicSelect', $musicOptions, 'all', '选择特定曲目', '选择要播放的特定曲目，默认随机播放全部。');
+    $layout->addItem($musicSelect);
 }
 
 $GLOBALS['VOIDSetting'] = Utils::getVOIDSettings();
