@@ -126,6 +126,9 @@ function themeFields(Typecho_Widget_Helper_Layout $layout)
     $layout->addItem($enableOutdatedNotice);
     $outdatedDays = new Typecho_Widget_Helper_Form_Element_Text('outdatedDays', null, '30', '过期提醒天数', '设置文章多少天后显示过期提醒，留空默认30天。');
     $layout->addItem($outdatedDays);
+
+    $enableMusic = new Typecho_Widget_Helper_Form_Element_Select('enableMusic', array('0' => '关闭', '1' => '开启'), '0', '是否插入音乐', '是否为该文章启用音乐功能。');
+    $layout->addItem($enableMusic);
 }
 
 $GLOBALS['VOIDSetting'] = Utils::getVOIDSettings();
