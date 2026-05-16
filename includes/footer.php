@@ -71,7 +71,13 @@ $setting = $GLOBALS['VOIDSetting'];
                 <a class="link" title="RSS" target="_blank" href="<?php $this->options->feedUrl(); ?>"><i class="voidicon-rss"></i></a>
                 <?php
                     foreach ($setting['link'] as $link) {
-                        echo "<a class=\"link\" title=\"{$link['name']}\" target=\"{$link['target']}\" href=\"{$link['href']}\"><i class=\"voidicon-{$link['icon']}\"></i></a>";
+                        if(strpos($link['icon'], '<svg') === 0) {
+                            echo "<a class=\"link\" title=\"{$link['name']}\" target=\"{$link['target']}\" href=\"{$link['href']}\">{$link['icon']}</a>";
+                        } elseif(strpos($link['icon'], '&#') === 0 || strpos($link['icon'], '\\u') === 0) {
+                            echo "<a class=\"link\" title=\"{$link['name']}\" target=\"{$link['target']}\" href=\"{$link['href']}\"><span class=\"icon-text\">{$link['icon']}</span></a>";
+                        } else {
+                            echo "<a class=\"link\" title=\"{$link['name']}\" target=\"{$link['target']}\" href=\"{$link['href']}\"><i class=\"voidicon-{$link['icon']}\"></i></a>";
+                        }
                     }
                 ?>
             </section>

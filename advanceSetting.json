@@ -1,0 +1,33 @@
+{
+    "brandFont": {
+        "src": "https://cdn.jsdelivr.net/gh/ResourcesFmt/resourcesfmt.github.io@main/fonts/mogra-regular.ttf",
+        "style": "normal",
+        "weight": "normal"
+    },
+    "link": [
+        {
+            "name": "GitHub",
+            "icon": "github",
+            "href": "https://github.com/FmCoral",
+            "target": "_blank"
+        },
+        {
+            "name": "Twitter",
+            "icon": "twitter",
+            "href": "https://twitter.com/FmCoral49",
+            "target": "_blank"
+        },
+        {
+            "name": "QQ",
+            "icon": "qq",
+            "href": "mqqapi://card/show_pslcard?src_type=internal&version=1&uin=948264617&card_type=person&source=qrcode",
+            "target": "_blank"
+        },
+        {
+            "name": "Email",
+            "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/><polyline points='22 6 12 13 2 6'/></svg>",
+            "href": "mailto:FmCoral49@gmail.com",
+            "target": "_blank"
+        }
+    ]
+}
