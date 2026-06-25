@@ -17,9 +17,7 @@
 }
 .articleBody h2 {
     position: relative;
-    padding-left: 1.1em;
     border-bottom: 3px solid #2ecc71;
-    padding-bottom: .35em;
     margin-top: 2em;
     margin-bottom: 1em;
 }
@@ -489,4 +487,40 @@ body.theme-dark kbd {
 video {
     width: 100%;
     border-radius: 4px;
+}
+
+/* ==========================================
+   9. 移动端适配 (≤767px)
+   ========================================== */
+@media screen and (max-width: 767px) {
+    /* h2 # 号 — 减小偏移避免超出屏幕 */
+    .articleBody h2 {
+        padding-left: .9em;
+    }
+    .articleBody h2::before {
+        left: -.7em;
+    }
+
+    /* 代码块 — 保持间距不撑满 */
+    .code-collapse-wrapper pre {
+        border-radius: 5px;
+    }
+
+    /* Copy 按钮 — 触摸设备始终可见 */
+    .articleBody pre .copyDiv {
+        opacity: .7;
+    }
+
+    /* 折叠按钮 — 适配小屏 */
+    .code-fold-toggle {
+        font-size: 11px;
+        padding: 4px 14px;
+    }
+
+    /* 表格 — 小屏允许滚动 */
+    .yue table {
+        display: block !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 }
