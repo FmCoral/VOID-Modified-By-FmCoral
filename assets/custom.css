@@ -1,0 +1,492 @@
+/* ========================================
+   Coral 自定义样式
+   设计语言：延续 VOID 侘寂极简美学
+   配色基于原主题灰阶，强调色克制使用
+   ======================================== */
+
+/* ==========================================
+   1. h2 标题 — 前置 # 号 + 底部分隔线
+   ========================================== */
+.articleBody h2::before {
+    content: '#';
+    color: #2ecc71;
+    position: absolute;
+    left: -.9em;
+    top: 50%;
+    transform: translateY(-44%);
+}
+.articleBody h2 {
+    position: relative;
+    padding-left: 1.1em;
+    border-bottom: 3px solid #2ecc71;
+    padding-bottom: .35em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+body.theme-dark .articleBody h2 {
+    border-bottom-color: #2ecc71;
+}
+body.theme-dark .articleBody h2::before {
+    color: #2ecc71;
+}
+
+/* ==========================================
+   2. 引用块 — 彩色标题栏
+   ========================================== */
+blockquote:has(h3, h4, h5, h6) {
+    border-left: 3px solid #dfdfdf !important;
+    padding: 0 !important;
+    margin: 1.2em 0 !important;
+    border-radius: 0 4px 4px 0;
+    overflow: hidden;
+}
+
+blockquote > h3:first-child,
+blockquote > h4:first-child,
+blockquote > h5:first-child,
+blockquote > h6:first-child {
+    font-size: .92rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    letter-spacing: .5px;
+    font-weight: 600;
+    padding: .5em .75em;
+}
+
+blockquote:has(h3, h4, h5, h6) > * {
+    padding-left: .75em;
+    padding-right: .75em;
+}
+
+/* h3 — 通知 (淡红) */
+blockquote > h3:first-child {
+    color: #bd6262 !important;
+    background: rgba(189,98,98,.08);
+}
+blockquote > h3:first-child::before {
+    content: "\f0c3";
+    font-family: "void-icon";
+    font-size: 1rem;
+    color: #bd6262;
+    margin-right: 8px;
+}
+
+/* h4 — 信息 (淡蓝) */
+blockquote > h4:first-child {
+    color: #5a8db5 !important;
+    background: rgba(90,141,181,.08);
+}
+blockquote > h4:first-child::before {
+    content: "\e812";
+    font-family: "void-icon";
+    font-size: 1.05rem;
+    color: #5a8db5;
+    margin-right: 8px;
+}
+
+/* h5 — 警告 (淡黄) */
+blockquote > h5:first-child {
+    color: #b08a40 !important;
+    background: rgba(253,188,64,.08);
+}
+blockquote > h5:first-child::before {
+    content: "\e800";
+    font-family: "void-icon";
+    font-size: 1rem;
+    color: #b08a40;
+    margin-right: 8px;
+}
+
+/* h6 — 成功 (淡绿) */
+blockquote > h6:first-child {
+    color: #5a8d6b !important;
+    background: rgba(84,188,75,.08);
+}
+blockquote > h6:first-child::before {
+    content: "\e805";
+    font-family: "void-icon";
+    font-size: 1rem;
+    color: #5a8d6b;
+    margin-right: 8px;
+}
+
+/* 暗色模式 */
+body.theme-dark blockquote:has(h3, h4, h5, h6) {
+    border-left-color: rgba(255,255,255,.15) !important;
+}
+body.theme-dark blockquote > h3:first-child { color: #d48989 !important; }
+body.theme-dark blockquote > h4:first-child { color: #7dafd4 !important; }
+body.theme-dark blockquote > h5:first-child { color: #d4aa56 !important; }
+body.theme-dark blockquote > h6:first-child { color: #7dbd8a !important; }
+
+/* ==========================================
+   3. 代码块 Copy 按钮
+   ========================================== */
+.articleBody pre {
+    position: relative;
+}
+
+.copyDiv {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    font-size: 11px;
+    color: #b0b0b0;
+    background: rgba(255,255,255,.85);
+    border: 1px solid #dfdfdf;
+    border-radius: 3px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .2s, color .2s, background .2s;
+    user-select: none;
+}
+
+.articleBody pre:hover .copyDiv {
+    opacity: 1;
+}
+
+.copyDiv:hover {
+    color: #1a1a1a;
+    background: #f0f0f0;
+}
+
+.copyDiv.copied {
+    color: #54bc4b;
+    border-color: rgba(84,188,75,.3);
+    background: rgba(84,188,75,.08);
+}
+
+.clipboard-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+body.theme-dark .copyDiv {
+    color: rgba(255,255,255,.4);
+    background: rgba(30,30,30,.9);
+    border-color: rgba(255,255,255,.1);
+}
+body.theme-dark .copyDiv:hover {
+    color: rgba(255,255,255,.8);
+    background: rgba(255,255,255,.08);
+}
+body.theme-dark .copyDiv.copied {
+    color: #54bc4b;
+    border-color: rgba(84,188,75,.3);
+    background: rgba(84,188,75,.1);
+}
+
+/* ==========================================
+   4. 代码块折叠 — 磨砂玻璃 + 框内底部按钮
+   ========================================== */
+
+/* 外层包裹 */
+.code-collapse-wrapper {
+    position: relative;
+    margin: 1em 0;
+}
+
+/* 折叠状态：限制高度 */
+.code-collapse-wrapper.collapsed pre {
+    max-height: 9em;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+/* 展开状态：底部留空间给收起按钮 */
+.code-collapse-wrapper:not(.collapsed) pre {
+    padding-bottom: 40px;
+}
+
+/* ---- 磨砂玻璃遮罩 ---- */
+.code-fold-overlay {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20%;
+    pointer-events: none;
+    z-index: 5;
+}
+.code-collapse-wrapper.collapsed .code-fold-overlay {
+    display: block;
+    /* 轻微模糊，若隐若现 — 代码仍可辨识 */
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(241,243,243,.35) 30%,
+        rgba(241,243,243,.65) 100%
+    );
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+body.theme-dark .code-collapse-wrapper.collapsed .code-fold-overlay {
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(17,17,17,.35) 30%,
+        rgba(17,17,17,.7) 100%
+    );
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+/* ---- 折叠/展开 切换按钮（始终在底部中央） ---- */
+.code-fold-toggle {
+    display: none;
+    position: absolute;
+    z-index: 6;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border: 1px solid rgba(0,0,0,.06);
+    cursor: pointer;
+    font-size: 12px;
+    padding: 5px 18px;
+    color: #7a7a7a;
+    background: rgba(255,255,255,.8);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 18px;
+    letter-spacing: .3px;
+    white-space: nowrap;
+    transition: all .2s ease;
+}
+
+.code-collapse-wrapper.collapsed .code-fold-toggle {
+    display: flex;
+}
+
+/* 展开后按钮也用同样的底部居中定位 */
+.code-collapse-wrapper:not(.collapsed) .code-fold-toggle {
+    display: flex;
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.code-fold-toggle:hover {
+    color: #1a1a1a;
+    background: rgba(255,255,255,.95);
+    border-color: rgba(0,0,0,.12);
+}
+
+/* ---- CSS 箭头 ---- */
+/* 向下箭头（展开） */
+.code-collapse-wrapper.collapsed .code-fold-toggle::after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+    opacity: .55;
+    transition: transform .2s;
+}
+
+/* 向上箭头（收起） */
+.code-collapse-wrapper:not(.collapsed) .code-fold-toggle::after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid currentColor;
+    opacity: .55;
+    transition: transform .2s;
+}
+
+/* ---- 暗色模式 ---- */
+body.theme-dark .code-fold-toggle {
+    color: rgba(255,255,255,.55);
+    background: rgba(40,40,40,.75);
+    border-color: rgba(255,255,255,.08);
+}
+body.theme-dark .code-fold-toggle:hover {
+    color: rgba(255,255,255,.8);
+    background: rgba(50,50,50,.85);
+    border-color: rgba(255,255,255,.15);
+}
+
+/* ==========================================
+   5. 有序列表 — 嵌套红色左边线
+   ========================================== */
+.articleBody ol ol {
+    list-style-type: upper-alpha;
+}
+.articleBody ol ol ol {
+    list-style-type: lower-alpha;
+}
+.articleBody ol ol,
+.articleBody ol ul,
+.articleBody ol ol ol {
+    border-left: 1px solid rgba(189,98,98,.3);
+    padding-left: 1.5rem;
+}
+.articleBody ol li::marker,
+.articleBody ul li::marker {
+    color: #b0b0b0;
+}
+
+/* ==========================================
+   6. Task List 复选框
+   ========================================== */
+.articleBody .task-list-item {
+    position: relative;
+    list-style-type: none;
+    padding-left: 26px;
+}
+.articleBody .task-list-item > input {
+    appearance: none;
+    -webkit-appearance: none;
+    display: block;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 4px;
+    left: 0;
+    border: 1.5px solid #cececf;
+    border-radius: 3px;
+    cursor: pointer;
+    background: transparent;
+    transition: border-color .2s, background .2s;
+}
+.articleBody .task-list-item > input:hover {
+    border-color: #b0b0b0;
+}
+.articleBody .task-list-item > input:checked {
+    background: #54bc4b;
+    border-color: #54bc4b;
+}
+.articleBody .task-list-item > input:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+}
+.task-list-done {
+    text-decoration: line-through;
+    color: #b0b0b0;
+}
+
+/* ==========================================
+   7. <details> 折叠块
+   ========================================== */
+details {
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    margin: 1em 0;
+    overflow: hidden;
+    transition: border-color .2s;
+}
+details[open] {
+    border-color: #cececf;
+}
+details summary {
+    padding: .6em .75em;
+    font-size: .9rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    background: #f6f8fa;
+    cursor: pointer;
+    letter-spacing: .3px;
+    outline: none;
+    transition: background .2s;
+}
+details summary:hover {
+    background: #efefee;
+}
+details[open] > summary {
+    border-bottom: 1px solid #dfdfdf;
+}
+details > *:not(summary) {
+    padding: .5em .75em;
+}
+summary::marker {
+    color: #b0b0b0;
+    font-size: .85em;
+}
+
+body.theme-dark details {
+    border-color: rgba(255,255,255,.1);
+}
+body.theme-dark details[open] {
+    border-color: rgba(255,255,255,.15);
+}
+body.theme-dark details summary {
+    color: rgba(255,255,255,.85);
+    background: rgba(255,255,255,.03);
+}
+body.theme-dark details summary:hover {
+    background: rgba(255,255,255,.06);
+}
+body.theme-dark details[open] > summary {
+    border-color: rgba(255,255,255,.08);
+}
+
+/* ==========================================
+   8. 通用微调
+   ========================================== */
+
+/* 文章链接图标 */
+.post > .articleBody a::after {
+    content: ' \f08e';
+    font-family: void-icon;
+    font-size: .7em;
+    color: #b0b0b0;
+}
+
+/* 表格居中 */
+.yue td,
+.yue th {
+    text-align: center !important;
+}
+.yue table {
+    display: table !important;
+    margin: 0 auto;
+}
+
+/* 键盘按键 */
+kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: .85em;
+    line-height: 1.5;
+    color: #1a1a1a;
+    background: #f6f8fa;
+    border: 1px solid #dfdfdf;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(0,0,0,.06);
+}
+body.theme-dark kbd {
+    color: rgba(255,255,255,.7);
+    background: rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.1);
+    box-shadow: 0 1px 0 rgba(0,0,0,.4);
+}
+
+/* 视频全宽 */
+video {
+    width: 100%;
+    border-radius: 4px;
+}
