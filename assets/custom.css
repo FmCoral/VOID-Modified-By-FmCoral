@@ -345,34 +345,29 @@ body.theme-dark .code-fold-toggle:hover {
 /* ==========================================
    6. Task List 复选框
    ========================================== */
-.articleBody .task-list-item {
-    position: relative;
+.articleBody .task-list-item,
+.comment-content .task-list-item {
     list-style-type: none;
-    padding-left: 26px;
+    margin-left: -1.4em;
 }
-.articleBody .task-list-item > input {
-    appearance: none;
-    -webkit-appearance: none;
-    display: block;
-    position: absolute;
+.task-checkbox {
+    display: inline-block;
+    position: relative;
     width: 15px;
     height: 15px;
-    top: 4px;
-    left: 0;
+    margin-right: 6px;
+    vertical-align: -2px;
     border: 1.5px solid #cececf;
     border-radius: 3px;
-    cursor: pointer;
+    cursor: default;
     background: transparent;
-    transition: border-color .2s, background .2s;
+    box-sizing: border-box;
 }
-.articleBody .task-list-item > input:hover {
-    border-color: #b0b0b0;
-}
-.articleBody .task-list-item > input:checked {
+.task-checkbox.checked {
     background: #54bc4b;
     border-color: #54bc4b;
 }
-.articleBody .task-list-item > input:checked::after {
+.task-checkbox.checked::after {
     content: '✓';
     position: absolute;
     top: 50%;
@@ -381,6 +376,7 @@ body.theme-dark .code-fold-toggle:hover {
     color: #fff;
     font-size: 10px;
     font-weight: 700;
+    line-height: 1;
 }
 .task-list-done {
     text-decoration: line-through;
@@ -444,6 +440,10 @@ body.theme-dark details[open] > summary {
 
 /* ==========================================
    8. 通用微调
+   ========================================== */
+
+/* ==========================================
+   9. 通用微调
    ========================================== */
 
 /* 文章链接图标 */

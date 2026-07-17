@@ -60,7 +60,43 @@ if (isset($_POST['void_action'])) {
     <link rel="stylesheet" href="<?php Utils::indexTheme('/assets/bundle-1e9bf597b1.css');?>">
     <link rel="stylesheet" href="<?php Utils::indexTheme('/assets/VOID-505617232e.css');?>">
     <link rel="stylesheet" href="<?php Utils::indexTheme('/assets/photos.css');?>">
-    <link rel="stylesheet" href="<?php Utils::indexTheme('/assets/custom.css');?>">
+    <link rel="stylesheet" href="<?php Utils::indexTheme('/assets/custom.css');?>?v=20260717">
+
+    <!-- Task List 样式 -->
+    <style>
+    .task-list-item {
+        list-style-type: none !important;
+        margin-left: -1.4em;
+    }
+    .task-checkbox {
+        display: inline-block;
+        position: relative;
+        width: 15px;
+        height: 15px;
+        margin-right: 6px;
+        vertical-align: -2px;
+        border: 1.5px solid #cececf;
+        border-radius: 3px;
+        cursor: default;
+        background: transparent;
+        box-sizing: border-box;
+    }
+    .task-checkbox.checked {
+        background: #54bc4b;
+        border-color: #54bc4b;
+    }
+    .task-checkbox.checked::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1;
+    }
+    </style>
 
     <!--JS-->
     <script src="<?php Utils::indexTheme('/assets/bundle-header-c3f7d82f38.js'); ?>"></script>

@@ -137,6 +137,7 @@ class VOID_Widget_Comments_Archive extends Widget_Abstract_Comments
                 <b><cite class="fn"><?php $singleCommentOptions->beforeAuthor();
                 $this->author();
                 $singleCommentOptions->afterAuthor(); ?></cite></b><span><?php echo $this->getParent(); ?></span>
+                <?php $this->callLocation(); ?>
             </div>
             <span>
                 <a href="<?php $this->permalink(); ?>"><timedatetime="<?php $this->date('c'); ?>"><?php $singleCommentOptions->beforeDate();
@@ -171,7 +172,24 @@ class VOID_Widget_Comments_Archive extends Widget_Abstract_Comments
                 <span class="fold">[该评论已被自动折叠 | <a no-pjax target="_self" href="javascript:void(0)" 
                 onclick="VOID_Vote.toggleFoldComment(<?php echo $this->coid; ?>, this)">点击展开</a>]</span>
             <?php }?>
-            <div class="comment-content-inner"><?php echo Contents::parseBiaoQing($this->content); ?></div>
+            <div class="comment-content-inner"><?php
+// GFM 任务列表：HTML 注释占位符，绕开 Markdown 解析和 stripTags
+$raw = preg_replace('/^(\s*[-+*])\s+\[ \]\s*/m', '$1 <!--TASK_OPEN--> ', $this->text);
+$raw = preg_replace('/^(\s*[-+*])\s+\[x\]\s*/mi', '$1 <!--TASK_DONE--> ', $raw);
+$html = \Utils\Markdown::convert($raw);
+$html = str_replace(
+    ['<!--TASK_OPEN-->', '<!--TASK_DONE-->'],
+    ['<span class="task-checkbox"></span>',
+     '<span class="task-checkbox checked"></span>'],
+    $html
+);
+$html = preg_replace(
+    '#<li>(<span class="task-checkbox)#',
+    '<li class="task-list-item">$1',
+    $html
+);
+echo Contents::parseBiaoQing($html);
+?></div>
         </div>
         <div class="comment-reply">
             <?php $this->reply($singleCommentOptions->replyWord); ?>
@@ -192,6 +210,7 @@ class VOID_Widget_Comments_Archive extends Widget_Abstract_Comments
         $parentID=$parentID['parent'];
         if($parentID=='0') return '';
         else {
+
             $author = $db->fetchRow($db->select()->from('table.comments')->where('coid = ?', $parentID));
             if ($author === null) {
                 $author = array();
