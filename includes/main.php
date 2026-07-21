@@ -4,8 +4,8 @@
  * 
  * 内容页面主要区域，PJAX 作用区域
  * 
- * @author      熊猫小A
- * @version     2019-01-15 0.1
+ * @author      熊猫小A, FmCoral
+ * @version     1.2 (PHP 8+ Compatible)
  */
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 $setting = $GLOBALS['VOIDSetting'];
@@ -21,66 +21,6 @@ $setting = $GLOBALS['VOIDSetting'];
 
     <div class="wrapper container">
         <div class="contents-wrap"> <!--start .contents-wrap-->
-            <?php if($this->fields->enableMusic == '1'): ?>
-            <div id="player" style="margin: 40px 0;"></div>
-            <link rel="stylesheet" href="<?php $this->options->themeUrl('assets/APlayer.min.css'); ?>">
-            <script src="<?php $this->options->themeUrl('assets/APlayer.min.js'); ?>"></script>
-            <script>
-            (function(){
-                var url = "<?php $this->options->themeUrl('assets/music.json'); ?>";
-                var lrcBase = "<?php $this->options->themeUrl('assets/lrc/'); ?>";
-                var selectedMusicRaw = "<?php echo $this->fields->musicSelect ? htmlspecialchars($this->fields->musicSelect) : ''; ?>";
-                var selectedMusic = selectedMusicRaw === '' ? 'all' : selectedMusicRaw;
-                function toArray(list){
-                    if(Array.isArray(list)) return list;
-                    var arr = [];
-                    if(list && typeof list === 'object'){
-                        for(var k in list){ if(Object.prototype.hasOwnProperty.call(list,k)) { var it=list[k]; it.__key=k; arr.push(it);} }
-                    }
-                    return arr;
-                }
-                try {
-                    fetch(url).then(function(r){return r.json();}).then(function(list){
-                        var arr = toArray(list);
-                        var lrcType = 3;
-                        for(var i=0;i<arr.length;i++){
-                            var item = arr[i];
-                            var key = item && item.__key != null ? item.__key : String(i);
-                            var raw = item && typeof item.lrc === 'string' ? item.lrc.trim() : '';
-                            var isUrl = /^https?:\/\//.test(raw) || /\.lrc(\?.*)?$/.test(raw);
-                            if(!isUrl){
-                                item.lrc = lrcBase + encodeURIComponent(key) + ".lrc";
-                            }
-                        }
-                        if (selectedMusic && selectedMusic !== 'all') {
-                            var filtered = arr.filter(function(item){ return item.__key === selectedMusic; });
-                            if (filtered.length > 0) {
-                                arr = filtered;
-                            }
-                        }
-                        new APlayer({
-                            element: document.getElementById('player'),
-                            container: document.getElementById('player'),
-                            narrow: false,
-                            autoplay: false,
-                            mutex: true,
-                            showlrc: 3,
-                            theme: '#b7daff',
-                            mode: 'random',
-                            preload: 'auto',
-                            listmaxheight: '340px',
-                            lrcType: lrcType,
-                            audio: arr
-                        });
-                    }).catch(function(){
-                        new APlayer({ element: document.getElementById('player'), container: document.getElementById('player'), audio: [] });
-                    });
-                } catch(e){
-                    new APlayer({ element: document.getElementById('player'), music: [] });
-                }
-            })();
-            </script>
-            <?php endif; ?>
             <section id="post" class="float-up">
                 <article class="post yue">
 
@@ -89,7 +29,7 @@ $setting = $GLOBALS['VOIDSetting'];
                     <?php endif; ?>
 
                     <div class="articleBody" class="full">
-                        <?php $this->content(); ?>
+                        <?php echo Contents::parseBiaoQing($this->content); ?>
                     </div>
                     
                     <?php $tags = Contents::getTags($this->cid); if (count($tags) > 0) { 
@@ -136,10 +76,10 @@ $setting = $GLOBALS['VOIDSetting'];
                         var src = $(item).attr('src');
                         if (typeof src === 'string' && src.indexOf('player.bilibili.com') > -1) {
                             // $(item).addClass('bili-player');
-                            // if (src.indexOf('&high_quality') < 0) {
-                            //     src += '&high_quality=1'; // 启用高质量
-                            //     $(item).attr('src', src);
-                            // }
+                            if (src.indexOf('&high_quality') < 0) {
+                                src += '&high_quality=1'; // 启用高质量
+                                $(item).attr('src', src);
+                            }
                             $(item).wrap('<div class="bili-player"></div>');
                         }
                     });
@@ -148,7 +88,7 @@ $setting = $GLOBALS['VOIDSetting'];
 
                 <!--分页-->
                 <?php if(!$this->is('page')): ?>
-                <div class="post-pager"><?php $prev = Contents::thePrev($this); ?>
+                <div class="post-pager"><?php $prev = Contents::thePrev($this); $next = Contents::theNext($this); ?>
                     <?php if($prev): ?>
                         <div class="prev">
                             <a href="<?php $prev->permalink(); ?>"><h2><?php $prev->title(); ?></h2></a>
@@ -159,7 +99,6 @@ $setting = $GLOBALS['VOIDSetting'];
                             <h2>没有了</h2>
                         </div>
                     <?php endif; ?>
-                    <?php $next = Contents::theNext($this); ?>
                     <?php if($next): ?>
                         <div class="next">
                             <a href="<?php $next->permalink(); ?>"><h2><?php $next->title(); ?></h2></a>

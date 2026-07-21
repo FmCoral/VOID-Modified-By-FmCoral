@@ -6,7 +6,7 @@
  * @version     2019-01-17 0.1
  * 
 */ 
-if (!defined('__TYPECHO_ROOT_DIR__')) exit; 
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 if(!Utils::isPjax()){
     $this->need('includes/head.php');
