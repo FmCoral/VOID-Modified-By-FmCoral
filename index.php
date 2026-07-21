@@ -5,8 +5,8 @@
  * 作者：<a href="https://www.imalan.cn">熊猫小A</a>
  * 
  * @package     Typecho-Theme-VOID
- * @author      熊猫小A
- * @version     3.5.1
+ * @author      熊猫小A, FmCoral
+ * @version     3.5.1 / PHP 8+ Compatible v1.2
  * @link        https://blog.imalan.cn/archives/247/
  */
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
@@ -51,14 +51,10 @@ if(!Utils::isPjax()){
                             <?php endif; ?>
                                 <div class="banner">
                                     <?php if (Helper::options()->lazyload == '1'): ?>
-                                        <?php if($setting['browserLevelLoadingLazy']): ?>
-                                            <img class="lazyload browserlevel-lazy" src="<?php echo $this->fields->banner;?>" loading="lazy">
-                                        <?php else: ?>
-                                            <?php if($setting['bluredLazyload']): ?>
-                                                <img src="<?php echo Contents::genBluredPlaceholderSrc($this->fields->banner); ?>" class="blured-placeholder">
-                                            <?php endif; ?>
-                                            <img class="lazyload" data-src="<?php echo $this->fields->banner;?>">
+                                        <?php if($setting['bluredLazyload']): ?>
+                                            <img src="<?php echo Contents::genBluredPlaceholderSrc($this->fields->banner); ?>" class="blured-placeholder">
                                         <?php endif; ?>
+                                        <img class="lazyload" data-src="<?php echo $this->fields->banner;?>">
                                     <?php else: ?>
                                         <img src="<?php echo $this->fields->banner;?>">
                                     <?php endif; ?>
@@ -91,7 +87,7 @@ if(!Utils::isPjax()){
                                         <p><?php if(Utils::isMobile()) $this->excerpt(60); else $this->excerpt(80); ?></p>
                                     <?php endif; ?>
                                 <?php else: ?>
-                                    <?php $this->content(); ?>
+                                    <?php echo Contents::parseBiaoQing($this->content); ?>
                                 <?php endif; ?>
                                 </div>
 
