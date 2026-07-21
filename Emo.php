@@ -13,6 +13,49 @@
 if (!defined('__TYPECHO_ROOT_DIR__'))
     exit;
 $setting = $GLOBALS['VOIDSetting'];
+// Read music data from MusicPlayer plugin
+$pluginMusicData = [];
+$musicDefaultCover = '';
+try {
+    if (class_exists('\TypechoPlugin\MusicPlayer\Plugin')) {
+        // Get MusicPlayer plugin's default cover setting
+        try {
+            $musicCfg = \Utils\Helper::options()->plugin('MusicPlayer');
+            $musicDefaultCover = $musicCfg->defaultCover ?? '';
+        } catch (\Throwable $e) {
+            $musicDefaultCover = '';
+        }
+
+        $cache = \TypechoPlugin\MusicPlayer\Plugin::getCache();
+        $siteUrl = rtrim(\Utils\Helper::options()->siteUrl, '/');
+        foreach ($cache as $folder => $song) {
+            $base = $siteUrl . '/usr/uploads/music/' . rawurlencode($folder) . '/';
+            $item = ['name' => $folder, 'url' => ''];
+            $item['url'] = !empty($song['audioUrl'])
+                ? $song['audioUrl']
+                : (!empty($song['audio'][0]) ? $base . rawurlencode($song['audio'][0]) : '');
+            if (empty($item['url'])) continue;
+            if (!empty($song['coverUrl'])) {
+                $item['cover'] = $song['coverUrl'];
+            } elseif (!empty($song['cover'])) {
+                $item['cover'] = $base . rawurlencode($song['cover']);
+            } elseif (!empty($musicDefaultCover)) {
+                // 歌曲无封面 → 用插件设置的默认封面
+                $item['cover'] = $musicDefaultCover;
+            }
+            if (!empty($song['lyricUrl'])) {
+                $item['lrc'] = $song['lyricUrl'];
+            } elseif (!empty($song['lyric'])) {
+                $item['lrc'] = $base . rawurlencode($song['lyric']);
+            }
+            $pluginMusicData[] = $item;
+        }
+    }
+} catch (\Throwable $e) {
+    // Plugin not available, ignore
+}
+
+// Fallback: read legacy music.json
 $musicDb = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'music.json';
 if (!file_exists($musicDb)) {
     @file_put_contents($musicDb, json_encode(array()));
@@ -38,10 +81,30 @@ if (!Utils::isPjax()) {
     <div class="wrapper container <?php if($setting['indexStyle'] == 1) echo 'narrow'; else echo 'wide'; ?>">
         <div id="player" style="margin: 40px 0;"></div>
     </div>
-    <link rel="stylesheet" href="<?php $this->options->themeUrl('assets/APlayer.min.css'); ?>">
-    <script src="<?php $this->options->themeUrl('assets/APlayer.min.js'); ?>"></script>
+    <link rel="stylesheet" href="<?php echo \Utils\Helper::options()->pluginUrl; ?>/MusicPlayer/APlayer.min.css">
+    <style>.aplayer-author{display:none!important}</style>
+    <script src="<?php echo \Utils\Helper::options()->pluginUrl; ?>/MusicPlayer/APlayer.min.js"></script>
     <script>
     (function(){
+        <?php if (!empty($pluginMusicData)): ?>
+        var arr = <?php echo json_encode($pluginMusicData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
+        arr = arr.sort(function(){ return Math.random() - 0.5; });
+        var lrcType = 3;
+        new APlayer({
+            element: document.getElementById('player'),
+            container: document.getElementById('player'),
+            narrow: false,
+            autoplay: false,
+            mutex: true,
+            showlrc: 3,
+            theme: '#b7daff',
+            mode: 'random',
+            preload: 'auto',
+            listmaxheight: '340px',
+            lrcType: lrcType,
+            audio: arr
+        });
+        <?php else: ?>
         var url = "<?php $this->options->themeUrl('assets/music.json'); ?>";
         var lrcBase = "<?php $this->options->themeUrl('assets/lrc/'); ?>";
         function toArray(list){
@@ -55,6 +118,7 @@ if (!Utils::isPjax()) {
         try {
             fetch(url).then(function(r){return r.json();}).then(function(list){
                 var arr = toArray(list);
+                arr = arr.sort(function(){ return Math.random() - 0.5; });
                 var lrcType = 3;
                 for(var i=0;i<arr.length;i++){
                     var item = arr[i];
@@ -85,6 +149,7 @@ if (!Utils::isPjax()) {
         } catch(e){
             new APlayer({ element: document.getElementById('player'), music: [] });
         }
+    <?php endif; ?>
     })();
     </script>
 

@@ -39,6 +39,7 @@ if (!Utils::isPjax()) {
             .wrapper.container {
                 width: 70%;
                 max-width: none;
+                margin: 0 auto;
             }
         }
     </style>
@@ -106,9 +107,12 @@ if (!Utils::isPjax()) {
             </script>
             <?php endif; ?>
             <section id="post" class="float-up">
+                <?php $postCheck = Utils::isOutdated($this); if($postCheck["is"] && $this->is('post')): ?>
+                    <p class="notice outdated-notice">请注意，本文编写于 <?php echo $postCheck["created"]; ?> 天前，最后修改于 <?php echo $postCheck["updated"]; ?> 天前，其中某些信息可能已经过时。</p>
+                <?php endif; ?>
                 <article class="post yue">
                     <div class="articleBody" class="full">
-                        <?php $this->content(); ?>
+                        <?php echo Contents::contentEx($this->content, $this, ''); ?>
                     </div>
                 </article>
             </section>

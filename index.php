@@ -87,7 +87,7 @@ if(!Utils::isPjax()){
                                         <p><?php if(Utils::isMobile()) $this->excerpt(60); else $this->excerpt(80); ?></p>
                                     <?php endif; ?>
                                 <?php else: ?>
-                                    <?php echo Contents::parseBiaoQing($this->content); ?>
+                                    <?php echo Contents::contentEx($this->content, $this, ''); ?>
                                 <?php endif; ?>
                                 </div>
 

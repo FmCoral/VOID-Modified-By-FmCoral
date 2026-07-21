@@ -203,6 +203,16 @@ function themeFields(Layout $layout): void
         '是否显示文章目录。'
     );
     $layout->addItem($showTOC);
+
+    // ↓↓↓ 过期提醒设置 ↓↓↓
+    $outdatedDays = new Text(
+        'outdatedDays',
+        null,
+        '0',
+        '过期提醒',
+        '文章发布超过此天数后显示"信息可能过时"提醒。填 <code>0</code> 关闭，留空默认 90 天。'
+    );
+    $layout->addItem($outdatedDays);
 }
 
 $GLOBALS['VOIDSetting'] = Utils::getVOIDSettings();

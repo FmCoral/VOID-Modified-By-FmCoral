@@ -27,8 +27,11 @@ $setting = $GLOBALS['VOIDSetting'];
         <div class="mask" id="bg"><div class="mask"></div></div>
         <div class="container" style="margin-bottom: 2rem">
             <article class="yue">
+                <?php $postCheck = Utils::isOutdated($this); if($postCheck["is"] && $this->is('post')): ?>
+                    <p class="notice outdated-notice">请注意，本文编写于 <?php echo $postCheck["created"]; ?> 天前，最后修改于 <?php echo $postCheck["updated"]; ?> 天前，其中某些信息可能已经过时。</p>
+                <?php endif; ?>
                 <div class="articleBody">
-                    <?php echo Contents::parseBiaoQing($this->content); ?>
+                    <?php echo Contents::contentEx($this->content, $this, ''); ?>
                 </div>
             </article>
         </div>

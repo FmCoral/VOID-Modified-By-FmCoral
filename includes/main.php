@@ -29,7 +29,7 @@ $setting = $GLOBALS['VOIDSetting'];
                     <?php endif; ?>
 
                     <div class="articleBody" class="full">
-                        <?php echo Contents::parseBiaoQing($this->content); ?>
+                        <?php echo Contents::contentEx($this->content, $this, ''); ?>
                     </div>
                     
                     <?php $tags = Contents::getTags($this->cid); if (count($tags) > 0) { 

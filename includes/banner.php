@@ -1,19 +1,27 @@
 <?php
-/** 
+/**
  * banner.php
- *  
+ *
  * @author      熊猫小A
  * @version     2019-01-17 0.1
- * 
-*/ 
+ *
+*/
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 $setting = $GLOBALS['VOIDSetting'];
 $banner = $setting['defaultBanner'];
 $blur = false;
 
 if($this->is('post') || $this->is('page')) {
-    $banner = $this->fields->bannerStyle < 2 ? $this->fields->banner : '';
-    $blur = $this->fields->bannerStyle == 1;
+    try {
+        $pageBanner = $this->fields->banner;
+    } catch (\Throwable $e) {
+        $pageBanner = null;
+    }
+    // 只有页面确实设了主图时才用它覆盖默认封面
+    if (!empty($pageBanner)) {
+        $banner = $this->fields->bannerStyle < 2 ? $pageBanner : '';
+        $blur = $this->fields->bannerStyle == 1;
+    }
 }
 ?>
 
@@ -23,7 +31,6 @@ if($this->is('post') || $this->is('page')) {
         else echo ' loading dark';
         if($this->is('index')) echo ' index';
         if($this->is('archive') && !$this->have()) echo ' not-found'; ?>">
-
     <?php if(!empty($banner)): ?>
         <div id="banner" class="<?php if($blur) echo 'blur'; ?>">
             <?php if($setting['bluredLazyload']): ?>
